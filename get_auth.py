@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 import tweepy
+from settings import settings as s
 
-CONSUMER_KEY = 'key'
-CONSUMER_SECRET = 'secret'
+CONSUMER_KEY = s['consumer_key']
+CONSUMER_SECRET = s['consumer_secret']
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 

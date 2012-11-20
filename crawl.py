@@ -6,6 +6,7 @@ import os
 from tweepy.parsers import JSONParser as Parser
 import ujson as json
 import fileinput
+from settings import settings as s
 
 tweet_ignore = [
     'contributors', 'in_reply_to_screen_name',
@@ -40,10 +41,10 @@ def strip_dict(d,trash):
 
 seen = set()
 
-CONSUMER_KEY = 'key'
-CONSUMER_SECRET = 'secret'
-ACCESS_KEY = 'key'
-ACCESS_SECRET = 'secret'
+CONSUMER_KEY = s['consumer_key']
+CONSUMER_SECRET = s['consumer_secret']
+ACCESS_KEY = s['access_key']
+ACCESS_SECRET = s['access_secret']
 STARTTWEETID = '267803772670066688'
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
