@@ -2,13 +2,17 @@ csce470proj
 ===========
 
 This project needs you to install 
-tumnlpy
-https://github.com/michaelhelmick/python-tumblpy
+tweepy
+tweetstream
+ujson
 
+To run tests, simply run 'nosetests' in the root directory. 
 
-django by using easy_install django
+In order to run the code, you must obtain from twitter a consumer key and secret and enter that data into settings.py or settings_local.py.
+Then follow the instructions to obtain the Access key and secret which you must also place in the settings files. 
 
-oauth-2 from
-https://github.com/simplegeo/python-oauth2
+To obtain tweets for end result comparison, simply enter your twitter username and password into the settings file and then run crawl.py.
 
-urlparse by using easy_install urlparse
+To obtain tweets for the learning set run scrapeTrends.py
+
+To obtain retweets of a given tweet run 'crawl.py tweetid'

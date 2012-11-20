@@ -45,7 +45,7 @@ CONSUMER_KEY = s['consumer_key']
 CONSUMER_SECRET = s['consumer_secret']
 ACCESS_KEY = s['access_key']
 ACCESS_SECRET = s['access_secret']
-STARTTWEETID = '267803772670066688'
+STARTTWEETID = sys.argv[1]
 
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
