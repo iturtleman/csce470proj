@@ -15,7 +15,7 @@ tweet_ignore = [
     'contributors', 'in_reply_to_screen_name',
     'truncated', 'id_str', 'retweeted_status',
     'in_reply_to_status_id_str', 'in_reply_to_user_id_str',
-    'favorited', 'geo', 'user_id_str',
+    'geo', 'user_id_str',
     'possibly_sensitive_editable', 'possibly_sensitive','truncated',
     
     ]
@@ -30,7 +30,7 @@ user_ignore = [
     'show_all_inline_media', 'status', 'notifications',
     'id_str', 'is_translator', 'profile_image_url', 'protected',
     'time_zone', 'default_profile', 'listed_count', 'geo_enabled',
-    'verified', 'following', 'profile_image_url_https', 'url',
+    'verified', 'profile_image_url_https', 'url',
     ]
 
 def strip_dict(d,trash):
@@ -40,7 +40,7 @@ def strip_dict(d,trash):
     nulls = [k for k,v in d.iteritems() if v==None]
     for key in nulls:
         del d[key]
-
+COUNTDISPLAYAMMOUNT=100
 seen = set()
 print 'Outfile tweets.condense.%d.json'%os.getpid()
 output = open('tweets.condense.%d.json'%os.getpid(),'w')
@@ -57,9 +57,11 @@ def clean_tweets(lines):
                     tweet = ast.literal_eval(line)
                 except:
                     #hope this is a dict if not something is going to break
-                    if isinstance(line,str):
+                    if isinstance(line,dict):
                         tweet = line
                     else:
+                        print 'Unexpected value:',line,'\n continuing'
+                        print type(line)
                         continue
 
             if 'user' not in tweet or not 'id' in tweet or tweet['id'] in seen:
@@ -74,10 +76,11 @@ def clean_tweets(lines):
             strip_dict(tweet['user'],user_ignore)
             print>>output, json.dumps(tweet)
             count +=1
-            if count%10000==0:
+            if count%COUNTDISPLAYAMMOUNT==0:
                 print count
 
             
 
 if __name__=="__main__":
+    COUNTDISPLAYAMMOUNT=10000
     clean_tweets(fileinput.input())
