@@ -30,7 +30,7 @@ class TestFeatureSelection(unittest.TestCase):
         
     # add tests here
     def test_feature_selector(self):
-        x = self.featureSelector.select('asdf')
+        x = self.featureSelector.getScores()
         for key,chi in x.items():
             self.assertAlmostEqual(chi, chi_values[key])
         pass
