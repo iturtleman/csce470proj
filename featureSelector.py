@@ -26,11 +26,7 @@ class ChiFeatureSelector:
             bottom = (n11 + n01) * (n11 + n10) * (n10 + n00) * (n01 + n00)
             chi = (total * top) / bottom
             scores[term] = chi
-
-        # sort the scores in descending order
-        scores = sorted([(v, k) for (k, v) in scores.items()], reverse = True)
-        i = 0
-
+            
         #note for format
 ##        for (v, k) in scores:
 ##            print str(k) + " : " + str(v)
