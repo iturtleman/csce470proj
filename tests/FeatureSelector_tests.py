@@ -4,10 +4,13 @@
 import unittest
 import featureSelector
 import math
+import ujson
+
 
 def read_tweets(filename):
     for line in open(filename):
-        yield ujson.loads(line)
+        if line:
+            yield ujson.loads(line)
 
 TREND_CORPUS = read_tweets('trending.json')
 NONTREND_CORPUS = read_tweets('nontrending.json')
@@ -16,11 +19,11 @@ NONTREND_CORPUS = read_tweets('nontrending.json')
 class TestFeatureSelection(unittest.TestCase):
     def setUp(self):
         self.featureSelector = featureSelector.ChiFeatureSelector(TREND_CORPUS, NONTREND_CORPUS)
-        pass
         
         
     # add tests here
     def test_feature_selector(self):
+        self.featureSelector.select('asdf')
         pass
 
 if __name__ == '__main__':

@@ -1,13 +1,13 @@
 import math
-import tweet
+from tweets import Tweets
 
 class ChiFeatureSelector:
     def __init__(self, class1, class2):
         # store the sets of tweets making up each bit of the training set
-        self.class1 = class1
-        self.class2 = class2
+        self.class1 = Tweets(class1)
+        self.class2 = Tweets(class2)
 
-    def select(self, outPath):
+    def getScores(self):
         #chi-squared scores
         scores = {}
 
@@ -16,8 +16,8 @@ class ChiFeatureSelector:
             # build the chi-squared table
             n11 = float(self.class1.getTermCount(term))
             n10 = float(self.class2.getTermCount(term))
-            n01 = float(self.class1.getTotalDocs() - n11)
-            n00 = float(self.class2.getTotalDocs() - n10)
+            n01 = float(self.class1.getDocCount() - n11)
+            n00 = float(self.class2.getDocCount() - n10)
 
             # perform the chi-squared calculation and store
             # the score in the dictionary
@@ -31,9 +31,7 @@ class ChiFeatureSelector:
         scores = sorted([(v, k) for (k, v) in scores.items()], reverse = True)
         i = 0
 
-        for (v, k) in scores:
-            print str(k) + " : " + str(v)
-            i += 1
-
-            if i == 10:
-                break
+        #note for format
+##        for (v, k) in scores:
+##            print str(k) + " : " + str(v)
+        return scores
