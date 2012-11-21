@@ -23,7 +23,7 @@ class TestFeatureSelection(unittest.TestCase):
         
     # add tests here
     def test_feature_selector(self):
-        self.featureSelector.select('asdf')
+        self.featureSelector.getScores()
         pass
 
 if __name__ == '__main__':
