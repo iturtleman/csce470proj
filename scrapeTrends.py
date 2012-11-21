@@ -7,13 +7,14 @@ from tweepy.parsers import JSONParser as Parser
 import ujson as json
 import fileinput
 import time
+from settings import settings as s
 
 tweet_ignore = [
     'contributors', 'in_reply_to_screen_name',
     'truncated', 'id_str', 'retweeted_status',
     'in_reply_to_status_id_str', 'in_reply_to_user_id_str',
-    'favorited', 'geo', 'user_id_str',
-    'possibly_sensitive_editable', 'possibly_sensitive','truncated'
+    'geo', 'user_id_str',
+    'possibly_sensitive_editable', 'possibly_sensitive',
     ]
 
 user_ignore = [
@@ -26,9 +27,9 @@ user_ignore = [
     'show_all_inline_media', 'status', 'notifications',
     'id_str', 'is_translator', 'profile_image_url', 'protected',
     'time_zone', 'default_profile', 'listed_count', 'geo_enabled',
-    'verified', 'following', 'profile_image_url_https', 'url',
-
+    'verified', 'profile_image_url_https', 'url', 
     ]
+
 #cleans up data
 def strip_dict(d,trash):
     for field in trash:
@@ -44,10 +45,10 @@ def strip_dict(d,trash):
 seen = set()
 
 #keys
-CONSUMER_KEY = 'key'
-CONSUMER_SECRET = 'secret'
-ACCESS_KEY = 'key'
-ACCESS_SECRET = 'secret'
+CONSUMER_KEY = s['consumer_key']
+CONSUMER_SECRET = s['consumer_secret']
+ACCESS_KEY = s['access_key']
+ACCESS_SECRET = s['access_secret']
 #set up auth
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
