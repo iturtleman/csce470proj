@@ -10,6 +10,7 @@ import classifier
 import utils
 from tweets import Tweets
 import re
+import tweepy
 
 def inputs():
     keyword = raw_input("Enter keyword to test: ")
@@ -27,9 +28,15 @@ if __name__=="__main__":
         classify.condProb = utils.read_conf('classifierTrained.json')
         classify.prior = utils.read_conf('classifier_prior.json') 
     while True:
-        keyword = re.sub('\s', '', inputs())
+        keyword = re.sub("""[/:*"<>?|\\\s.;'\[\]]+""", '', inputs())
+        if not keyword:
+            print 'Please enter a valid phrase'
+            continue
         try:
             scrapeTrends.search_tweet(keyword)
+        except tweepy.TweepError:
+            print 'Please enter a valid phrase'
+            continue
         except:
              print 'No internet connection present'
         try:
