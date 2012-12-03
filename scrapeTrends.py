@@ -114,7 +114,7 @@ def search_tweet(tag,name=""):
     if '/' in tag or '?' in tag:
         return
     r = api.search(tag, result_type='mixed', count=100, include_entities='true')
-    filename= 'tweets.%(name)s.%(id)d.json'%{'id':os.getpid(),'name':name}
+    filename= 'tweets.%(name)s.%(id)d.json'%{'id':os.getpid(),'name':name} if name != '' else 'tweets.%(name)s.json'%{'name':tag}
     print 'Adding to ',filename
     output = open('tweets/%s'%filename,'a+')
 

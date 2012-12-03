@@ -72,55 +72,29 @@ class HashtagClassifier(object):
                         condProb[token] = {c:math.log((concatText[token]+1.)/(denom))}
         self.condProb=condProb
         
-    # You'll need a way to calculate the sentiment of a tweet when this code
-    # is used by index.py.
-    def classify_filtered(self, tweets):
-        #we want to classify each of the tweets
-        classified = {}
-        all_ids = {}
-        all_ids['positive']=[ doc['id'] for doc in tweets['positive']]
-        all_ids['negative']=[ doc['id'] for doc in tweets['negative']]
-        for c,docs in tweets.iteritems():
-            classified[c] = self.classify(docs)
-        
-        #let's get our confusion matrix
-        confusion = {'positive':0, 'negative':0, 'falsepos':0, 'falseneg':0}
-        for c,ids in classified.items():
-            for id, val in ids.items():
-                if c == val:
-                    confusion[c]+=1
-                elif c == 'positive':
-                    confusion['falseneg']+=1
-                else:
-                    confusion['falsepos']+=1
-
-        #print confuse
-##        print '\tPosExp\tNegExp'
-##        print 'PosAct\t',confusion['positive'],'\t',confusion['falsepos']
-##        print 'NegAct\t',confusion['falseneg'],'\t',confusion['negative']
-
-        #save last run for comparison
-        self.lastConfusion = confusion
-        #merge the two sets into one and return
-        
-        return dict(classified['positive'].items()+classified['negative'].items())
-        
     #this actually classifies the data and returns it
     def classify(self,tweets):
         retval = {}
         for tweet in tweets:
             retval[tweet['id']] = self.classify_one(tweet)
-        return retval
+        textvals = Counter([val[0] for val in retval.values()])
+        retweetvals =Counter([val[1] for val in retval.values()])
+        vals = Counter([val[0]&val[1] for val in retval.values()])
+        print textvals
+        print retweetvals
+        print vals
+        return 'Popular' if True in vals else 'Unpopular'
 
     #to make obtaining data from indexing easier
     def classify_one(self,tweet):
-        chancePos=self.prior['positive']
-        chanceNeg=self.prior['negative']
-        for tok in tokenize(tweet['text']):
+        chancePos=self.prior['pos']
+        chanceNeg=self.prior['neg']
+        for tok in tweets.tokenize(tweet['text']):
             if tok in self.condProb:
-                chancePos+=self.condProb[tok]['positive']
-                chanceNeg+=self.condProb[tok]['negative']
-        return 'positive' if chancePos > chanceNeg else 'negative'
+                chancePos+=self.condProb[tok]['pos']
+                chanceNeg+=self.condProb[tok]['neg']
+        
+        return True if chancePos > chanceNeg else False, True if 'recent_retweets' in tweet['metadata'] else False
         
 
 # taken from http://en.wikipedia.org/wiki/List_of_emoticons
@@ -160,6 +134,8 @@ def main():
     print 'Trained classifier written to classifierTrained.json'
     output = open('classifierTrained.json','w')
     print>>output, ujson.dumps(analyzer.condProb)
+    print analyzer.prior
+    
     
     confusion = {'positive':0., 'negative':0., 'falsepos':0., 'falseneg':0.}
     iterations = 10

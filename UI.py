@@ -8,9 +8,8 @@ import featureSelector
 import ast
 import classifier
 import utils
-
-checkWord = {}
-
+from tweets import Tweets
+import re
 
 def inputs():
     keyword = raw_input("Enter keyword to test: ")
@@ -25,20 +24,21 @@ if __name__=="__main__":
         cfs = ChiFeatureSelector('trending.%d.json'%os.getpid(), 'nontrending.%d.ujson'%os.getpid())     
     except:    
         classify = classifier.HashtagClassifier()
-        classify.condProb = utils.read_tweets('classifierTrained.ujson') 
+        classify.condProb = utils.read_conf('classifierTrained.json')
+        classify.prior = utils.read_conf('classifier_prior.json') 
     while True:
-        keyword = inputs()
+        keyword = re.sub('\s', '', inputs())
         try:
-            scrapeTrends.search_tweet(keyword, keyword)
+            scrapeTrends.search_tweet(keyword)
         except:
              print 'No internet connection present'
         try:
-            tweets = utils.read_tweets('tweets/tweets.%(name)s.%(id)d.json'%{'id':os.getpid(),'name':keyword})
+            tweets = utils.read_tweets('tweets/tweets.%(name)s.json'%{'name':keyword})
         except:
             print 'could not classify keyword'
             continue
         #try:
-        classify.classify(tweets)
+        print classify.classify(Tweets(tweets))
         #except:
         #    print ''        
     
