@@ -110,11 +110,12 @@ def scrape():
 
 #searches for a given tag and returns tweets
 def search_tweet(tag,name=""):
-    print tag
+    print 'searching for:',tag
     if '/' in tag or '?' in tag:
         return
     r = api.search(tag, result_type='mixed', count=100, include_entities='true')
     filename= 'tweets.%(name)s.%(id)d.json'%{'id':os.getpid(),'name':name}
+    print 'Adding to ',filename
     output = open('tweets/%s'%filename,'a+')
 
     for tweet in r['results']:
