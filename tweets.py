@@ -22,7 +22,16 @@ class Tweets:
             allterms = allterms+tokenize(text)
         self.terms = set(allterms)
         self.counts = Counter(allterms)
-        self.docCount=len(self.tweets)
+        self.docCount=float(len(self.tweets))
+
+    def __add__(self, other):
+        return Tweets(self.tweets+other.tweets)
+
+    def __len__(self):
+        return self.docCount
+
+    def __iter__(self):
+        return iter(self.tweets)
         
     #getTerms in tweets
     def getTerms(self):

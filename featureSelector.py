@@ -4,11 +4,7 @@ import sys
 import ujson
 import os
 import operator
-
-def read_tweets(filename):
-    for line in open(filename):
-        if line:
-            yield ujson.loads(line)
+import utils
 
 class ChiFeatureSelector:
     def __init__(self, class1, class2):
@@ -42,7 +38,7 @@ class ChiFeatureSelector:
         return scores
 
 if __name__=="__main__":
-    cfs=ChiFeatureSelector(read_tweets(sys.argv[1]), read_tweets(sys.argv[2]))
+    cfs=ChiFeatureSelector(utils.read_tweets(sys.argv[1]), utils.read_tweets(sys.argv[2]))
     print 'Features written to features.%d.json'%os.getpid()
     output = open('features.%d.json'%os.getpid(),'w')
     print>>output, ujson.dumps(cfs.getScores())
