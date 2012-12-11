@@ -122,7 +122,7 @@ def main():
     output = open('trend_words.json','w')
     print>>output, ujson.dumps(TRENDING_WORDS)
 
-    print 'trending dict written to nontrend_words.json'
+    print 'nontrending dict written to nontrend_words.json'
     output = open('nontrend_words.json','w')
     print>>output, ujson.dumps(NONTRENDING_WORDS)
 ##    print 'trending:\n',TRENDING_WORDS,'\n\n'
@@ -134,7 +134,7 @@ def main():
     print 'Trained classifier written to classifierTrained.json'
     output = open('classifierTrained.json','w')
     print>>output, ujson.dumps(analyzer.condProb)
-    print analyzer.prior
+    print ujson.dumps(analyzer.prior)
     
     
     confusion = {'positive':0., 'negative':0., 'falsepos':0., 'falseneg':0.}
