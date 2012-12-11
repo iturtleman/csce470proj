@@ -7,6 +7,7 @@ from tweepy.parsers import JSONParser as Parser
 import ujson as json
 import fileinput
 import time
+import utils
 from settings import settings as s
 
 tweet_ignore = [
@@ -108,15 +109,24 @@ def scrape():
 
     print 'done'
 
+def max_tweet_id(filename):
+    fname = 'tweets/%s'%filename
+    if os.path.isfile(fname):
+        tweets = utils.read_tweets(fname)
+        return max([tweet['id'] for tweet in tweets])
+    else:
+        return 0
+
 #searches for a given tag and returns tweets
 def search_tweet(tag,name=""):
     print 'searching for:',tag
     if '/' in tag or '?' in tag:
-        return
-    r = api.search(tag, result_type='mixed', count=100, include_entities='true')
+        return    
     filename= 'tweets.%(name)s.%(id)d.json'%{'id':os.getpid(),'name':name} if name != '' else 'tweets.%(name)s.json'%{'name':tag}
     print 'Adding to ',filename
+    max_id = 0 if name !='' else max_tweet_id(filename) 
     output = open('tweets/%s'%filename,'a+')
+    r = api.search(tag, result_type='mixed', count=100, include_entities='true', since_id = max_id)
 
     for tweet in r['results']:
         if tweet['id'] in seen:

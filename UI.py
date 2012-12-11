@@ -37,8 +37,7 @@ if __name__=="__main__":
         except tweepy.TweepError:
             print 'Please enter a valid phrase'
             continue
-        except:
-             print 'No internet connection present'
+        
         try:
             tweets = utils.read_tweets('tweets/tweets.%(name)s.json'%{'name':keyword})
         except:
