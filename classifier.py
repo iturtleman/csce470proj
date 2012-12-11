@@ -105,7 +105,7 @@ def approx_Equal(x, y, tolerance=0.001):
     return abs(x-y) <= 0.5 * tolerance * (x + y)
 
 def main():
-    filtered = filterFeatures(open('features.159168.json')).keys()
+    filtered = filterFeatures(open('features.json')).keys()
     posTweets = tweets.Tweets(utils.read_tweets('tweets/tweets.Trend.json'))
     negTweets = tweets.Tweets(utils.read_tweets('tweets/tweets.nonTrend.json'))
     
